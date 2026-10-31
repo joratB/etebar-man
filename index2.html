@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>درخواست اعتبارسنجی خرید اقساطی</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Tahoma, Arial, sans-serif;
+      background: #f2f5f8;
+      color: #263238;
+    }
+    .container {
+      max-width: 480px;
+      margin: 30px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 5px 25px #00000012;
+    }
+    h2 { text-align: center; color: #174b76; }
+    p { line-height: 2; font-size: 14px; }
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccd5df;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    .fee {
+      margin: 20px 0;
+      padding: 14px;
+      text-align: center;
+      background: #edf5ff;
+      border-radius: 8px;
+      color: #174b76;
+      font-weight: bold;
+    }
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 12px;
+      line-height: 1.8;
+      margin: 18px 0;
+    }
+    .consent input { width: auto; margin-top: 4px; }
+    button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #1769aa;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .note {
+      font-size: 11px;
+      color: #687782;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h2>درخواست اعتبارسنجی</h2>
+    <p>
+      لطفاً اطلاعات زیر را با دقت وارد کنید.
+      پیش از ثبت درخواست، از صحت اطلاعات و شرایط
+      استفاده از خدمات اطمینان حاصل کنید.
+    </p>
+
+    <form id="requestForm">
+      <label for="fullname">نام و نام خانوادگی</label>
+      <input id="fullname" name="fullname" required>
+
+      <label for="nationalId">کد ملی</label>
+      <input id="nationalId" name="nationalId"
+             inputmode="numeric" maxlength="10" required>
+
+      <label for="birthdate">تاریخ تولد</label>
+      <input id="birthdate" name="birthdate"
+             type="text" placeholder="مثلاً ۱۳۷۵/۰۵/۲۰" required>
+
+      <label for="mobile">شماره موبایل</label>
+      <input id="mobile" name="mobile"
+             type="tel" placeholder="09xxxxxxxxx" required>
+
+      <label for="phone">شماره تماس جایگزین (اختیاری)</label>
+      <input id="phone" name="phone" type="tel">
+
+      <div class="fee">
+        هزینه بررسی درخواست: ۵,۰۰۰ تومان
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" id="agree" required>
+        <span>
+          با ثبت درخواست و استفاده از اطلاعات واردشده برای
+          بررسی اعتبارسنجی موافقم و سیاست حفظ حریم خصوصی
+          را مطالعه کرده‌ام.
+        </span>
+      </label>
+
+      <button type="submit">ادامه و پرداخت</button>
+    </form>
+
+    <p class="note">
+      اطلاعات واردشده باید فقط از طریق بستر امن و با رضایت
+      کاربر پردازش شوند. این صفحه به‌تنهایی اطلاعات را ذخیره
+      یا ارسال نمی‌کند.
+    </p>
+  </main>
+
+  <script>
+    document.getElementById("requestForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nationalId = document.getElementById("nationalId").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+
+      if (!/^[0-9۰-۹]{10}$/.test(nationalId)) {
+        alert("کد ملی باید ۱۰ رقم باشد.");
+        return;
+      }
+
+      if (!/^09[0-9۰-۹]{9}$/.test(mobile)) {
+        alert("شماره موبایل معتبر وارد کنید.");
+        return;
+      }
+
+      if (!document.getElementById("agree").checked) {
+        alert("لطفاً موافقت خود را ثبت کنید.");
+        return;
+      }
+
+      window.location.href = "./Pay/";
+    });
+  </script>
+</body>
+</html>
